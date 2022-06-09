@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
 
+
 namespace SFTPService
 {
     public interface ISftpService
@@ -53,11 +54,19 @@ namespace SFTPService
 
                 if (client.IsConnected)
                 {
-                    using (FileStream filestream = File.OpenRead(filePath))
+                    try
                     {
-                        client.UploadFile(filestream, fileName, null);
+                        using (FileStream filestream = File.OpenRead(filePath))
+                        client.UploadFile(filestream, fileName);
+                        Console.WriteLine("Upload ok!");
 
                     }
+                    catch (Exception)
+                    {
+
+                        Console.WriteLine("Erro!");
+                    }
+                    
                 }
                 client.Disconnect();
             }

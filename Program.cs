@@ -15,7 +15,7 @@ namespace sftp
                 Host = "locslhost",
                 Port = 22,
                 UserName = "dev",
-                Password = "homolog",
+               Password = "homolog"
 
             };
             var sftpService = new SftpService(new NullLogger<SftpService>(), config);
@@ -35,9 +35,9 @@ namespace sftp
                 }
             }
 
-            var testFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "teste.txt");
+            var testFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "teste1.txt");
             //sftpService.UploadFile(testFile, "/.");
-            sftpService.UploadFile(testFile, "/homologacao");
+            sftpService.UploadFile(testFile, "/homologacao/teste/teste1.txt" );
 
         }
     }
