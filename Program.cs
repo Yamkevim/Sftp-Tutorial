@@ -12,7 +12,7 @@ namespace sftp
         {
             var config = new SftpConfig
             {
-                Host = "10.100.0.37",
+                Host = "locslhost",
                 Port = 22,
                 UserName = "dev",
                 Password = "homolog",
