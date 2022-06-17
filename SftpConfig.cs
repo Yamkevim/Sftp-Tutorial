@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections;
+using System;
 
 namespace SFTPService
 {
@@ -10,6 +11,12 @@ namespace SFTPService
 		public string UserName { get; set; }
 		public string Password { get; set; }
 
+	}
+
+	public class Byte
+	{
+	object Current { get; }
+    
 	}
 
 }

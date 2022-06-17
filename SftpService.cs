@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
@@ -10,8 +11,8 @@ namespace SFTPService
 {
     public interface ISftpService
     {
-        IEnumerable<SftpFile> ListAllFiles(string remoteDirectory = "/homolagacao");
-        void UploadFile(string localFilePath, string remoteFilePath);
+        //Task<IEnumerable<SftpFile>> ListAllFiles(string remoteDirectory = "/");
+       Task UploadFile(string localFilePath, IEnumerable<byte[]> remoteFilePath);
 
 
     }
@@ -27,26 +28,8 @@ namespace SFTPService
             _config = sftpConfig;
         }
 
-        public IEnumerable<SftpFile> ListAllFiles(string remoteDirectory = "/homologacao")
-        {
-            using var client = new SftpClient(_config.Host, _config.Port, _config.UserName, _config.Password);
-            try
-            {
-                client.Connect();
-                return client.ListDirectory(remoteDirectory);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, $"Falha ao gravar  [{remoteDirectory}]");
-                return null;
-            }
-            finally
-            {
-                client.Disconnect();
-            }
-        }
-
-        public void UploadFile(string filePath, string fileName)
+        
+         public Task UploadFile(string filePath, IEnumerable<byte[]> fileName)
         {
             using var client = new SftpClient(_config.Host, _config.Port, _config.UserName, _config.Password);
             {
@@ -56,18 +39,23 @@ namespace SFTPService
                 {
                     try
                     {
-                        using (FileStream filestream = File.OpenRead(filePath))
-                        client.UploadFile(filestream, fileName);
-                        Console.WriteLine("Upload ok!");
-
+                        foreach (var files in fileName)
+                        {
+                            client.WriteAllBytes( filePath, files );
+                            Console.WriteLine("Upload ok! " + filePath ); 
+                        }
+                       
+                        return null;
                     }
                     catch (Exception)
                     {
 
                         Console.WriteLine("Erro!");
+                        return null;
                     }
                     
                 }
+                return null;
                 client.Disconnect();
             }
         }
